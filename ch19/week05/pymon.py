@@ -61,18 +61,29 @@ class PyMon:
         avg_vol20 = sum_vol20 / 20;
         if today_vol > avg_vol20 * 10:
             return True
+        else:
+            return False
+
+    def update_buy_list(self, buy_list):
+        f = open("buy_list.txt", "wt")
+        for code in buy_list:
+            f.writelines("매수;%s;시장가;10;0;매수전\n" % (code))
+        f.close()
 
     def run(self):
-        num = len(self.kosdak_codes)
-        for i, code in enumerate(self.kosdak_codes):
-            print(i, '/', num)
+        buy_list = []
+
+        for code in self.kospi_codes:
             if self.check_speedy_rising_volumn(code):
-                print("급등주: ", code, ": ", end="")
-                print(self.kiwoom.GetMasterCodeName(code))
+                buy_list.append(code)
+
+        for code in self.kosdak_codes:
+            if self.check_speedy_rising_volumn(code):
+                buy_list.append(code)
+
+        self.update_buy_list(buy_list)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     pymon = PyMon()
     pymon.run()
-
-
