@@ -85,9 +85,14 @@ class PyMon:
         self.update_buy_list(buy_list)
 
     def calculate_estimated_dividend_to_treasury(self, code):
-        estimated_dividend_yield = float(webreader.get_estimated_dividend_yield(code))
+        dividend_yield = webreader.get_estimated_dividend_yield(code)
+
+        if pd.isnull(dividend_yield):
+            dividend_yield = webreader.get_dividend_yield(code)
+
+        dividend_yield = float(dividend_yield)
         current_3year_treasury = float(webreader.get_current_3year_treasury())
-        estimated_dividend_to_treasury = estimated_dividend_yield / current_3year_treasury
+        estimated_dividend_to_treasury = dividend_yield / current_3year_treasury
         return estimated_dividend_to_treasury
 
     def get_min_max_dividend_to_treasury(self, code):
@@ -103,39 +108,40 @@ class PyMon:
                 ratio = float(previous_dividend_yield[year]) / float(three_years_treasury[year])
                 previous_dividend_to_treasury[year] = ratio
 
-        print(previous_dividend_to_treasury)
         min_ratio = min(previous_dividend_to_treasury.values())
         max_ratio = max(previous_dividend_to_treasury.values())
 
         return (min_ratio, max_ratio)
 
-    def check_dividend_algorithm(self, code):
+    def buy_check_by_dividend_algorithm(self, code):
         estimated_dividend_to_treasury = self.calculate_estimated_dividend_to_treasury(code)
         (min_ratio, max_ratio) = self.get_min_max_dividend_to_treasury(code)
 
-        if estimated_dividend_to_treasury >= max_ratio:
+        if estimated_dividend_to_treasury > max_ratio:
             return (1, estimated_dividend_to_treasury)
-        elif estimated_dividend_to_treasury <= min_ratio:
-            return (-1, estimated_dividend_to_treasury)
         else:
             return (0, estimated_dividend_to_treasury)
 
     def run_dividend(self):
         buy_list = []
 
-        for code in self.kospi_codes:
-            ret = self.check_dividend_algorithm(code)
+        for code in self.kospi_codes[0:50]:
+            time.sleep(0.5)
+            ret = self.buy_check_by_dividend_algorithm(code)
             if ret[0] == 1:
                 buy_list.append((code, ret[1]))
 
-        for code in self.kosdak_codes:
-            ret = self.check_dividend_algorithm(code)
-            if ret[0] == 1:
-                buy_list.append((code, ret[1]))
+        sorted_list = sorted(buy_list, key=lambda code:code[1], reverse=True)
+
+        # Buy list
+        buy_list = []
+        for i in range(0, 5):
+            code = sorted_list[i][0]
+            buy_list.append(code)
+
+        self.update_buy_list(buy_list)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     pymon = PyMon()
-    #pymon.run()
-    #print(pymon.calculate_estimated_dividend_to_treasury('058470'))
-    print(pymon.get_min_max_dividend_to_treasury('058470'))
+    pymon.run_dividend()

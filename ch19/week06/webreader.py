@@ -61,12 +61,9 @@ def get_dividend_yield(code):
 def get_estimated_dividend_yield(code):
     df = get_financial_statements(code)
 
-    now = datetime.datetime.now()
-    cur_year = '%d/12(E)' % (now.year)
-    cur_year = df[cur_year]
-
+    column = df.columns[5]
+    cur_year = df[column]
     estimated_dividend_yield = cur_year['현금배당수익률']
-
     return estimated_dividend_yield
 
 def get_previous_dividend_yield(code):
@@ -75,11 +72,11 @@ def get_previous_dividend_yield(code):
 
     ret = {}
     now = datetime.datetime.now()
-    cur_year = now.year
+    year = now.year - 5
 
-    for year in range(cur_year-5, cur_year):
-        if str(year) in dividend_yields.index:
-            ret[year] = dividend_yields[str(year)]
+    for dividend_yield in dividend_yields.values:
+        ret[year] = dividend_yield
+        year += 1
 
     return ret
 
