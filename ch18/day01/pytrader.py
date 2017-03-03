@@ -1,7 +1,7 @@
 import sys
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4 import uic
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5 import uic
 from Kiwoom import *
 
 form_class = uic.loadUiType("pytrader.ui")[0]
@@ -12,7 +12,7 @@ class MyWindow(QMainWindow, form_class):
         self.setupUi(self)
 
         self.kiwoom = Kiwoom()
-        self.kiwoom.CommConnect()
+        self.kiwoom.comm_connect()
 
         self.timer = QTimer(self)
         self.timer.start(1000)
@@ -23,7 +23,7 @@ class MyWindow(QMainWindow, form_class):
         text_time = current_time.toString("hh:mm:ss")
         time_msg = "현재시간: " + text_time
 
-        state = self.kiwoom.GetConnectState()
+        state = self.kiwoom.get_connect_state()
         if state == 1:
             state_msg = "서버 연결 중"
         else:
