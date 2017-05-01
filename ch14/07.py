@@ -3,6 +3,7 @@ import datetime
 from zipline.api import order, record, symbol
 from zipline.algorithm import TradingAlgorithm
 from zipline.api import set_commission, commission
+from zipline.utils.factory import create_simulation_parameters
 import matplotlib.pyplot as plt
 
 start = datetime.datetime(2016, 1, 1)
@@ -22,9 +23,8 @@ def handle_data(context, data):
     #order_target(context.sym, 1)
     order(context.sym, 1)
 
-algo = TradingAlgorithm(capital_base=100000000, initialize=initialize, handle_data=handle_data)
+algo = TradingAlgorithm(sim_params=create_simulation_parameters(capital_base=100000000), initialize=initialize, handle_data=handle_data)
 result = algo.run(data)
 
 print(result[['starting_cash', 'ending_cash', 'ending_value']])
-#print(result.head())
 

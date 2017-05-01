@@ -38,3 +38,11 @@ def handle_data(context, data):
 
 algo = TradingAlgorithm(initialize=initialize, handle_data=handle_data)
 result = algo.run(data)
+
+#plt.plot(result.index, result.ma5)
+#plt.plot(result.index, result.ma20)
+#plt.legend(loc='best')
+#plt.show()
+
+#plt.plot(result.index, result.portfolio_value)
+#plt.show()
