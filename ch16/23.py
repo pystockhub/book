@@ -21,7 +21,7 @@ class MyWindow(QWidget):
         self.setLayout(layout)
 
     def pushButtonClicked(self):
-        items = ("KOSPI", "KOSDAK", "KONEX")
+        items = ("KOSPI", "KOSDAQ", "KONEX")
         item, ok = QInputDialog.getItem(self, "시장선택", "시장을 선택하세요.", items, 0, False)
         if ok and item:
             self.label.setText(item)

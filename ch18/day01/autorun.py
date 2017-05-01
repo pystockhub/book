@@ -4,9 +4,9 @@ import time
 import os
 
 app = application.Application()
-app.start("C:/Kiwoom/KiwoomFlash2/khministarter.exe")
+app.start("C:/KiwoomFlash3/bin/nkministarter.exe")
 
-title = "번개 Login"
+title = "번개3 Login"
 dlg = timings.WaitUntilPasses(20, 0.5, lambda: app.window_(title=title))
 
 pass_ctrl = dlg.Edit2
@@ -21,4 +21,7 @@ btn_ctrl = dlg.Button0
 btn_ctrl.Click()
 
 time.sleep(50)
-os.system("taskkill /im khmini.exe")
+os.system("taskkill /im nkmini.exe")
+
+
+

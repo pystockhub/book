@@ -20,5 +20,6 @@ plt.xticks(pos, industry)
 for i, rect in enumerate(rects):
     ax.text(rect.get_x() + rect.get_width() / 2.0, 0.95 * rect.get_height(), str(fluctuations[i]) + '%', ha='center')
 
+plt.rcParams['axes.unicode_minus'] = False
 plt.ylabel('등락률')
 plt.show()
