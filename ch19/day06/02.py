@@ -1,11 +1,24 @@
-import requests
+from bs4 import BeautifulSoup
 
-def get_financial_statements(code):
-    url = "http://companyinfo.stock.naver.com/v1/company/ajax/cF1001.aspx?cmp_cd=%s&fin_typ=0&freq_typ=Y" % (code)
-    html = requests.get(url).text
-    print(html)
-    #print(type(requests.get(url)))
-    #print(type(requests.get(url).text))
+html = '''
+<html>
+<table border=1>
+	<tr>
+		<td> 항목 </td>
+		<td> 2013 </td>
+		<td> 2014 </td>
+		<td> 2015 </td>
+	</tr>
 
-if __name__ == "__main__":
-    get_financial_statements('035720')
+	<tr>
+		<td> 매출액 </td>
+		<td> 100 </td>
+		<td> 200 </td>
+		<td> 300 </td>
+	</tr>
+</table>
+</html>
+'''
+soup = BeautifulSoup(html, 'html5lib')    
+result = soup.select('td:nth-of-type(1)')
+print(result)

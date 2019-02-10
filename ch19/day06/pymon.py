@@ -75,8 +75,8 @@ class PyMon:
 
     def calculate_estimated_dividend_to_treasury(self, code):
         estimated_dividend_yield = webreader.get_estimated_dividend_yield(code)
-
-        if np.isnan(estimated_dividend_yield):
+        print("calculate_estimated_dividend_to_treasury", estimated_dividend_yield)
+        if estimated_dividend_yield == 0:
             estimated_dividend_yield = webreader.get_dividend_yield(code)
 
             if estimated_dividend_yield == "":
@@ -109,7 +109,7 @@ class PyMon:
         return (min_ratio, max_ratio)
 
     def buy_check_by_dividend_algorithm(self, code):
-        estimated_dividend_to_treasury = self.calculate_estimated_dividend_to_treasury(code)
+        estimated_dividend_to_treasury = self.calculate_estimated_dividend_to_treasury(code)        
         (min_ratio, max_ratio) = self.get_min_max_dividend_to_treasury(code)
 
         if estimated_dividend_to_treasury >= max_ratio and max_ratio != 0:
