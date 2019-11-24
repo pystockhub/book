@@ -113,7 +113,10 @@ class Kiwoom(QAxWidget):
         if strip_data == '' or strip_data == '.00':
             strip_data = '0'
 
-        format_data = format(int(strip_data), ',d')
+        try:
+            format_data = format(int(strip_data), ',d')
+        except:
+            format_data = format(float(strip_data))
         if data.startswith('-'):
             format_data = '-' + format_data
 
