@@ -18,7 +18,7 @@ def get_financial_statements(code):
     html = requests.get(url, , verify = False, headers=headers).text
 
     soup = BeautifulSoup(html, "html5lib")
-    dividend = soup.select("table:nth-of-type(2) tr:nth-of-type(33) td span")
+    dividend = soup.select("table:nth-of-type(2) tr:nth-of-type(31) td span")
     years = soup.select("table:nth-of-type(2) th")
 
     dividend_dict = {}
